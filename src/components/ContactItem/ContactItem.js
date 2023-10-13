@@ -2,7 +2,7 @@ import { Component } from 'react';
 import styles from './ContactItem.module.css';
 export class ContactItem extends Component {
   onClick = evt => {
-    this.props.deleteContact(evt.target.name);
+    this.props.deleteContact(evt.currentTarget.id);
   };
   render() {
     return (
@@ -10,7 +10,7 @@ export class ContactItem extends Component {
         <p>
           {this.props.name}:{this.props.phone}
         </p>
-        <button name={this.props.name} type="button" onClick={this.onClick}>
+        <button id={this.props.id} name={this.props.name} type="button" onClick={this.onClick}>
           Delete
         </button>
       </li>

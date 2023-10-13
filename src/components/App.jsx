@@ -14,7 +14,7 @@ export class App extends Component {
     ],
     filter: '',
   };
-  
+
   createContact = data => {
     const isUser = this.state.contacts.find(({ name }) => name === data.name);
     if (isUser) {
@@ -39,16 +39,23 @@ export class App extends Component {
         .includes(this.state.filter.toLocaleLowerCase().trim())
     );
 
-  deleteContact = userName => {
-    this.state.contacts.forEach((obj, i) => {
-      if (userName !== obj.name) {
-        return;
-      }
-
-      this.state.contacts.splice(i, 1);
-      this.setState({ contacts: this.state.contacts });
-    });
+  componentDidUpdate(_, prevState) {
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+  deleteContact = id => {
+    this.setState(prev => ({
+      contacts: prev.contacts.filter(arr => arr.id !== id),
+    }));
   };
+
+  componentDidMount() {
+    const localContacts = localStorage.getItem('contacts');
+    if (localContacts !== null) {
+      this.setState({ contacts: JSON.parse(localContacts) });
+    }
+  }
 
   render() {
     return (
